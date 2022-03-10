@@ -19,7 +19,7 @@ function CreateDeckButton() {
           className="mb-2 p-2 button border text-white border-secondary btn-secondary rounded"
           onClick={() => createDeckButtonHandler()}
         >
-          + Create Deck
+          <i class="bi bi-plus-lg"></i> Create Deck
         </button>
       </Link>
     </div>

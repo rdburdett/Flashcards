@@ -34,19 +34,19 @@ function Deck({ deck }) {
       </div>
 
       <Link to={`${url}/`}>
-        <button className="mr-2 p-2 button text-white border border-primary btn-primary rounded">
-          View
+        <button className="mr-2 p-2 button text-white border border-secondary btn-secondary rounded">
+        <i class="bi bi-eye-fill"></i> View
         </button>
       </Link>
 
       <Link to={`${url}/study`}>
         <button className="mr-2 p-2 button text-white border border-primary btn-primary rounded">
-          Study
+        <i class="bi bi-journal-bookmark-fill"></i> Study
         </button>
       </Link>
 
-      <button className="mr-2 p-2 button border border-danger btn-danger rounded">
-        Delete
+      <button className=" p-2 button border border-danger btn-danger rounded float-right">
+      <i class="bi bi-trash-fill"></i>
       </button>
 
       {/* <Link to={`${url}/edit`}>

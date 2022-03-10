@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Switch, useRouteMatch, Link } from "react-router-dom";
-
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Deck from "../Decks/Deck";
@@ -20,7 +20,10 @@ function Layout() {
       <Header />
 
       {/* Nav Links */}
-      <BreadCrumbs path={path} />
+      <div className="container p-3">
+        <BreadCrumbs path={path} />
+      </div>
+      
       
       {/* Routes */}
       <div className="px-4">
@@ -42,10 +45,12 @@ function Layout() {
           <Route path={`/decks/:deckId/cards/:cardId/edit`}></Route>
           {/* Not Found */}
           <Route><NotFound /></Route>
+          
         </Switch>
       </div>
     </div>
   );
+
 }
 
 

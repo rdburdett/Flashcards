@@ -9,7 +9,7 @@ function BreadCrumbs({ path }) {
   const homeLink = (
     <div>
       {/* fix history push */}
-      <Link onClick={history.push("/")} className="d-flex align-items-center text-primary">
+      <Link to="/" className="d-flex align-items-center text-primary">
         <HouseFill className="mr-1" />Home
       </Link>
     </div>
