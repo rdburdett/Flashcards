@@ -1,5 +1,11 @@
 import React from "react";
-import { Route, Switch, useRouteMatch, useHistory, Link } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useRouteMatch,
+  useHistory,
+  Link,
+} from "react-router-dom";
 
 function CreateDeckButton() {
   const createDeckButtonHandler = () => {
@@ -8,14 +14,14 @@ function CreateDeckButton() {
 
   return (
     <div>
-      <button
-        className="mb-2 p-2 button border border-secondary btn-secondary rounded"
-        onClick={() => createDeckButtonHandler()}
-      >
-        <Link to={`/decks/new`}>
-        + Create Deck
-        </Link>
-      </button>
+      <Link to={`/decks/new`}>
+        <button
+          className="mb-2 p-2 button border text-white border-secondary btn-secondary rounded"
+          onClick={() => createDeckButtonHandler()}
+        >
+          + Create Deck
+        </button>
+      </Link>
     </div>
   );
 }
