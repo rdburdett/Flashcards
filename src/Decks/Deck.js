@@ -1,75 +1,34 @@
 import React from "react";
-import {
-  Route,
-  Switch,
-  useRouteMatch,
-  Link,
-  useParams,
-  useHistory
-} from "react-router-dom";
-// TODO: change static to fetch from API localhost:8080
+import { useParams, Link } from "react-router-dom/cjs/react-router-dom.min";
 
-import { cards } from "../data/db.json";
-
-
-function Deck({ deck }) {
-  const { path, url } = useRouteMatch();
-  const { deckId } = useParams();
-  const history = useHistory()
-  console.log(path);
-
+export default function Deck({ cards }) {
+  const { deckId } = useParams()
   const Cards = () => {
-    const listOfCards = cards.map((card) => {
-      return <li key={card.id}>{card.name}</li>
-    })
-    return <p>Cards</p>;
+    // const listOfCards = cards.map((card) => {
+    //   return <li key={card.id}>{card.name}</li>
+    // })
+    return (
+      <p>Cards</p>
+    )
   };
 
   return (
-    <div className="container">
-      <div className="d-flex flex-row justify-content-between">
-        <h4>{deck.name}</h4>
-        <p>{cards.length} cards</p>
-      </div>
-      <div>
-        <p>{deck.description}</p>
-      </div>
-
-      <Link to={`${url}/`}>
-        <button className="mr-2 p-2 button text-white border border-secondary btn-secondary rounded">
-        <i class="bi bi-eye-fill"></i> View
-        </button>
-      </Link>
-
-      <Link to={`${url}/study`}>
-        <button className="mr-2 p-2 button text-white border border-primary btn-primary rounded">
-        <i class="bi bi-journal-bookmark-fill"></i> Study
-        </button>
-      </Link>
-
-      <button className=" p-2 button border border-danger btn-danger rounded float-right">
-      <i class="bi bi-trash-fill"></i>
-      </button>
-
-      {/* <Link to={`${url}/edit`}>
+    <div>
+      <Cards />
+      
+      <Link to={`/decks/${deckId}/edit`}>
         <button className="mr-2 p-2 button text-white border border-secondary btn-secondary rounded">
           Edit
         </button>
-      </Link> */}
+      </Link>
 
-      {/* <Link to={`${url}/cards/new`}>
+      <Link to={`/decks/${deckId}/new`}>
         <button className="mr-2 p-2 button text-white border border-primary btn-primary rounded">
           Add Cards
         </button>
-      </Link> */}
-
-
-
-      <div>
-
-      </div>
+      </Link>
     </div>
-  );
+  )
 }
 
-export default Deck;
+
