@@ -5,25 +5,18 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import Deck from "../Decks/Deck";
 import DecksList from "./DecksList";
-import BreadCrumb from "./BreadCrumb"
-import { decks, cards } from "../data/db.json";
+import { decks } from "../data/db.json";
 
 function Layout() {
   const { path } = useRouteMatch();
   // console.log(path)
   // console.log(decks)
   const [deckState, setDeckState] = useState(decks)
-  
+
   return (
     <div className="background-warning">
       {/* Header */}
       <Header />
-
-      {/* Nav Links */}
-      
-      <BreadCrumb path={path} />
-      
-      
       
       {/* Routes */}
       <div className="px-4">
@@ -34,7 +27,7 @@ function Layout() {
           {/* Create Deck */}
           <Route path="/decks/new"><p>Create Deck</p></Route>
           {/* Deck */}
-          <Route path="/decks/:deckId"><Deck />Deck</Route>
+          <Route path="/decks/:deckId"><Deck /></Route>
           {/* Study */}
           <Route path={`/decks/:deckId/study`}><p>Study</p></Route>
           {/* Edit Deck */}

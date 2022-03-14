@@ -1,32 +1,33 @@
 // import { decks } from "../data/db.json"
 import React from "react";
 import { HouseFill } from "react-bootstrap-icons";
-import { useHistory, useParams, Link } from "react-router-dom";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { useHistory, useParams, Link, useRouteMatch } from "react-router-dom";
 
 function BreadCrumb({ path }) {
   const history = useHistory();
   const iconStyle = "d-flex flex-row align-items-center";
+  // const { path } = useRouteMatch()
 
-
-  const homeLink = (
-    <div>
-      {/* fix history push */}
-      {/* <Link to="/" className="d-flex align-items-center text-primary">
-        <HouseFill className="mr-1" />Home
-      </Link> */}
-      {path}
-      <Breadcrumb>
-        <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-        <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-          Library
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active>Data</Breadcrumb.Item>
-      </Breadcrumb>
-    </div>
+  const crumbs = (
+    // <div className="breadcrumb">
+    //   {/* fix history push */}
+    //   {/* <Link to="/" className="d-flex align-items-center text-primary">
+    //     <HouseFill className="mr-1" />Home
+    //   </Link> */}
+    //     <div>
+    //     </div>{path}
+    // </div>
+  <nav aria-label="breadcrumb">
+    {path}
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Library</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+  </nav>
   );
 
-  return <div className="container">{homeLink}</div>;
+  return <div className="container">{crumbs}</div>;
 }
 
 export default BreadCrumb;
