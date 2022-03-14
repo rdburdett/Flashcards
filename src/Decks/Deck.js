@@ -7,6 +7,8 @@ import {
   useParams,
   useHistory
 } from "react-router-dom";
+// TODO: change static to fetch from API localhost:8080
+
 import { cards } from "../data/db.json";
 
 
@@ -61,7 +63,7 @@ function Deck({ deck }) {
         </button>
       </Link> */}
 
-      
+
 
       <div>
 

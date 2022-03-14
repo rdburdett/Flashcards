@@ -5,7 +5,7 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import Deck from "../Decks/Deck";
 import DecksList from "./DecksList";
-import BreadCrumbs from "./BreadCrumbs"
+import BreadCrumb from "./BreadCrumb"
 import { decks, cards } from "../data/db.json";
 
 function Layout() {
@@ -15,14 +15,14 @@ function Layout() {
   const [deckState, setDeckState] = useState(decks)
   
   return (
-    <div>
+    <div className="background-warning">
       {/* Header */}
       <Header />
 
       {/* Nav Links */}
-      <div className="container p-3">
-        <BreadCrumbs path={path} />
-      </div>
+      
+      <BreadCrumb path={path} />
+      
       
       
       {/* Routes */}
