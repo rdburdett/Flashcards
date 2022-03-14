@@ -1,19 +1,26 @@
-import React, { useState } from "react";
-import { Route, Switch, useRouteMatch, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Deck from "../Decks/Deck";
-import DecksList from "./DecksList";
-import { decks } from "../data/db.json";
+import DecksList from "../Home/DecksList";
+import * as api from "../utils/api"
 
-function Layout() {
-  const { path } = useRouteMatch();
-  // console.log(path)
-  // console.log(decks)
-  const [deckState, setDeckState] = useState(decks)
+export default function Layout() {
+  const [deckState, setDeckState] = useState()
 
-  return (
+  useEffect(() => {
+    async function fetchDecks() {
+      // You can await here
+      const deckList = await api.listDecks()
+      // ...
+      setDeckState(deckList)
+    }
+    fetchDecks()
+  }, [])
+
+  return (!deckState) ? "Loading" : (
     <div className="background-warning">
       {/* Header */}
       <Header />
@@ -22,12 +29,19 @@ function Layout() {
       <div className="px-4">
       
         <Switch>
+          {/* COMPLETED */}
+
           {/* Home (list of decks) */}
           <Route exact path="/"><DecksList decks={deckState} /></Route>
+          {/* Deck */}
+          <Route path="/decks/:deckId"><Deck decks={deckState} /></Route>
+
+
+
+
+          {/* TODO */}
           {/* Create Deck */}
           <Route path="/decks/new"><p>Create Deck</p></Route>
-          {/* Deck */}
-          <Route path="/decks/:deckId"><Deck /></Route>
           {/* Study */}
           <Route path={`/decks/:deckId/study`}><p>Study</p></Route>
           {/* Edit Deck */}
@@ -43,9 +57,4 @@ function Layout() {
       </div>
     </div>
   );
-
 }
-
-
-export default Layout;
-

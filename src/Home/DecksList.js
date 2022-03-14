@@ -1,9 +1,10 @@
 import React from "react"
-import DeckPreview from "../Decks/DeckPreview";
-import CreateDeckButton from "./CreateDeckButton";
+import DeckPreview from "../Home/DeckPreview";
+import CreateDeckButton from "../Layout/CreateDeckButton";
 
 // List of decks for Home page
 function DecksList({ decks }) {
+  
   // Build array of deck preview cards
   const listOfDecks = decks.map((deck) => {
     return (

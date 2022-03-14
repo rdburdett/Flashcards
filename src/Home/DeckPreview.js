@@ -1,23 +1,18 @@
 import React from "react";
 import {
-  useRouteMatch,
   Link,
-  useParams,
-  useHistory
 } from "react-router-dom";
 
 // TODO: change static to fetch from API localhost:8080
-import { cards } from "../data/db.json";
+// import { cards } from "../data/db.json";
 
 
 function DeckPreview({ deck }) {
-  const { path, url } = useRouteMatch();
-
   return (
     <div className="container">
       <div className="d-flex flex-row justify-content-between">
         <h4>{deck.name}</h4>
-        <p>{cards.length} cards</p>
+        <p>{deck.cards.length} cards</p>
       </div>
       <div>
         <p>{deck.description}</p>
