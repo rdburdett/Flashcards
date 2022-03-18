@@ -1,6 +1,7 @@
 import React from "react"
 import DeckPreview from "../Home/DeckPreview";
-import CreateDeckButton from "../Layout/CreateDeckButton";
+import * as Button from "../Layout/resources/Buttons"
+
 
 // List of decks for Home page
 function DecksList({ decks }) {
@@ -15,7 +16,7 @@ function DecksList({ decks }) {
 
   return (
     <div className="container">
-      <CreateDeckButton />
+      <Button.CreateDeckButton />
       {/* List of decks */}
       <ul className="list-group">{listOfDecks}</ul>
     </div>

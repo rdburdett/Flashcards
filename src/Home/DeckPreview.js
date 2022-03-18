@@ -20,20 +20,20 @@ function DeckPreview({ deck }) {
 
       <Link to={`/decks/${deck.id}`}>
         <button className="mr-2 p-2 button text-white border border-secondary btn-secondary rounded">
-        <i class="bi bi-eye-fill"></i> View
+        <i className="bi bi-eye-fill"></i> View
         </button>
       </Link>
 
       <Link to={`/decks/${deck.id}/study`}>
         <button className="mr-2 p-2 button text-white border border-primary btn-primary rounded">
-        <i class="bi bi-journal-bookmark-fill"></i> Study
+        <i className="bi bi-journal-bookmark-fill"></i> Study
         </button>
       </Link>
 
       <button className=" p-2 button border border-danger btn-danger rounded float-right">
-      <i class="bi bi-trash-fill"></i>
+        <i className="bi bi-trash-fill"></i>
       </button>
-
+      {/* <Button.Trash onClick={deleteHandler} /> */}
       
 
     </div>
