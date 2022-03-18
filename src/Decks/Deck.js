@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, Link, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import * as Button from "../Layout/resources/Buttons";
 import * as api from "../utils/api";
 // "/decks/:deckId"
 
+
 export default function Deck({ decks }) {
   const { deckId, cardId } = useParams();
   const history = useHistory()
+  // const url = useLocation()
+  // const [deckState, setDeckState] = useState()
+  // const [filteredDeck, setFilteredDeck] = useState(decks)
 
-  const [deckState, setDeckState] = useState()
-  const [filteredDeck, setFilteredDeck] = useState()
+  // useEffect(() => {
+  //   async function fetchDecks() {
+  //     const deckList = await api.listDecks()
+  //     setDeckState(deckList)
+  //     console.log(deckList)
+  //   }
+  //   fetchDecks()
+  //   console.log(deckState)
 
-  useEffect(() => {
-    async function fetchDecks() {
-      const deckList = await api.listDecks()
-      setDeckState(deckList)
-      console.log(deckList)
-    }
-    fetchDecks()
-    console.log(deckState)
+  const filteredDeck = (decks.filter((deck) => deck.id === parseInt(deckId))[0]);
 
-    setFilteredDeck(deckState.filter((deck) => deck.id === parseInt(deckId))[0]);
+  // }, [url])
 
-  }, [])
-
-  
   
   const deleteDeck = () => {
     api.deleteDeck(deckId)

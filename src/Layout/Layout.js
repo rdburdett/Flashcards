@@ -24,10 +24,10 @@ export default function Layout() {
       setDecks(deckList)
     }
     fetchDecks()
-    console.log(url)
+    // console.log(url)
   }, [])
 
-  console.log(url)
+  // console.log(url)
 
   return (!decks) ? "Loading" : (
     <div className="background-warning">
