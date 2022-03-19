@@ -90,10 +90,6 @@ export default function AddCard({ decks }) {
     );
   };
 
-  {
-    /* <input type="text" value={this.state.value} onChange={this.handleChange} /> */
-  }
-
   // MAIN RENDER
   return (
     <div className="container">

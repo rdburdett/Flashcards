@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Flipper from "./Flipper";
-
+import * as api from "../utils/api";
 // Route = "/decks/:deckId"
 
-export default function Study({ decks }) {
+export default function Study() {
   const { deckId } = useParams();
-  const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
+  const [decks, setDecks] = useState()
 
-  const Crumbs = () => {
+  useEffect(() => {
+    async function fetchDecks() {
+      const deckList = await api.listDecks()
+      setDecks(deckList)
+    }
+    fetchDecks()
+  }, [])
+
+  const filterDecks = () => (decks.filter((deck) => deck.id === parseInt(deckId))[0]);
+
+  const Crumbs = ({ filteredDeck }) => {
     return (
       <nav id="breadcrumbs">
         <ol className="breadcrumb">
@@ -24,7 +34,8 @@ export default function Study({ decks }) {
     );
   };
 
-  const DeckTitle = () => {
+  const DeckTitle = ({ filteredDeck }) => {
+
     return (
       <div>
         <div className="pb-2">
@@ -34,7 +45,8 @@ export default function Study({ decks }) {
     );
   };
 
-  const NotEnough = () => {
+  const NotEnough = ({ filteredDeck }) => {
+
     return (
       <div className="p-3 alertcontainer mb-2 border rounded">
         <div><h2>Not enough cards.</h2></div>
@@ -43,21 +55,23 @@ export default function Study({ decks }) {
     )
   }
 
-  const output = ((
+  const Output = () => {
+    const filteredDeck = filterDecks()
+    return ((
     (filteredDeck.cards.length > 2) ? 
     <div>
-      <Crumbs />
-      <DeckTitle />
-      <Flipper cards={filteredDeck.cards} />
+      <Crumbs filteredDeck={filteredDeck}/>
+      <DeckTitle filteredDeck={filteredDeck}/>
+      <Flipper cards={filteredDeck.cards} filteredDeck={filteredDeck}/>
     </div>
    : 
     <div>
-      <Crumbs />
-      <DeckTitle />
-      <NotEnough />
+      <Crumbs filteredDeck={filteredDeck}/>
+      <DeckTitle filteredDeck={filteredDeck}/>
+      <NotEnough filteredDeck={filteredDeck}/>
     </div>
-  ))
+  ))}
 
   // MAIN RENDER
-  return output
+  return (!decks) ? "Loading" : <Output />
 }

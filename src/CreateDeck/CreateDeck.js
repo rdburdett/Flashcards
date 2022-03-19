@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import * as api from "../utils/api";
-import * as Button from "../Layout/resources/Buttons";
 
 // Route = "/decks/new"
 
-export default function CreateDeck({ setDecks, fetchDecks }) {
+export default function CreateDeck() {
   const history = useHistory();
   const title = "Create Deck";
 
@@ -46,12 +45,10 @@ export default function CreateDeck({ setDecks, fetchDecks }) {
     const handleSubmit = (e) => {
       e.preventDefault();
       // console.log("Clicked", newDeck);
-      let newId = ""
       api.createDeck(newDeck).then((res) => {
         console.log(res.id)
         history.push(`/decks/${res.id}`)
       })
-
     };
 
     const handleChange = (e) => {
@@ -111,10 +108,6 @@ export default function CreateDeck({ setDecks, fetchDecks }) {
       </form>
     );
   };
-
-  {
-    /* <input type="text" value={this.state.value} onChange={this.handleChange} /> */
-  }
 
   // MAIN RENDER
   return (

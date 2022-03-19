@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useHistory, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useParams,
+  Link,
+  useHistory,
+} from "react-router-dom/cjs/react-router-dom.min";
 import * as Button from "../Layout/resources/Buttons";
 import * as api from "../utils/api";
+
 // "/decks/:deckId"
 
+export default function Deck() {
+  const { deckId } = useParams();
+  const history = useHistory();
+  const [decks, setDecks] = useState();
 
-export default function Deck({ decks }) {
-  const { deckId, cardId } = useParams();
-  const history = useHistory()
-  // const url = useLocation()
-  // const [deckState, setDeckState] = useState()
-  // const [filteredDeck, setFilteredDeck] = useState(decks)
+  async function fetchDecks() {
+    const deckList = await api.listDecks();
+    setDecks(deckList);
+  }
 
-  // useEffect(() => {
-  //   async function fetchDecks() {
-  //     const deckList = await api.listDecks()
-  //     setDeckState(deckList)
-  //     console.log(deckList)
-  //   }
-  //   fetchDecks()
-  //   console.log(deckState)
-
-  const filteredDeck = (decks.filter((deck) => deck.id === parseInt(deckId))[0]);
-
-  // }, [url])
-
+  useEffect(() => {
+    fetchDecks();
+  }, []);
   
+  const filterDecks = () =>
+    decks.filter((deck) => deck.id === parseInt(deckId))[0];
+
   const deleteDeck = () => {
-    api.deleteDeck(deckId)
-    console.log("deleted", deckId)
-    history.push("/")
-  }
-  const deleteCard= (id) => {
-    console.log("hi", id)
-  }
+    api.deleteDeck(deckId);
+    console.log("deleted", deckId);
+    history.push("/");
+  };
 
   const Crumbs = () => {
+    const filteredDeck = filterDecks();
     return (
       <nav id="breadcrumbs">
         <ol className="breadcrumb">
@@ -49,12 +47,7 @@ export default function Deck({ decks }) {
   };
 
   const DeckTitle = () => {
-    
-    // const deleteHandler = (e) => {
-    //   e.preventDefault();
-    //   api.deleteDeck(deckId)
-    //   console.log("Deleted", deckId);
-    // };
+    const filteredDeck = filterDecks();
 
     return (
       <div>
@@ -80,11 +73,11 @@ export default function Deck({ decks }) {
     );
   };
 
-  const CardTemplate = ({ card }) => {
-    const deleteHandler = (e) => {
-      e.preventDefault();
-      console.log("Deleted", card.id);
-      deleteCard(card.id)
+  const CardTemplate = ({ card, cardId }) => {
+    const deleteCard = () => {
+      api.deleteCard(cardId);
+      console.log("deleted", cardId);
+      fetchDecks()
     };
 
     return (
@@ -104,11 +97,12 @@ export default function Deck({ decks }) {
   };
 
   const Cards = () => {
+    const filteredDeck = filterDecks();
     const cards = filteredDeck.cards;
     const listOfCards = cards.map((card) => {
       return (
         <li className="list-group-item" key={card.id}>
-          <CardTemplate card={card} />
+          <CardTemplate card={card} cardId={card.id} />
         </li>
       );
     });
@@ -122,7 +116,9 @@ export default function Deck({ decks }) {
   };
 
   // MAIN RENDER
-  return (!filteredDeck) ? "Loading" : (
+  return !decks ? (
+    "Loading"
+  ) : (
     <div className="container">
       <Crumbs />
       <DeckTitle />
