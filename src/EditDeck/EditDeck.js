@@ -1,31 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
-import * as Button from "../Layout/resources/Buttons";
 
 // Route = "/decks/:deckId/edit"
 
-export default function EditDeck({ decks }) {
+export default function EditDeck() {
   const history = useHistory();
   const { deckId } = useParams();
-  const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
+  const [deck, setDeck] = useState();
 
-  // async function fetchDecks() {
-  //   const deckList = await api.listDecks()
-  //   setDeckState(deckList)
-  // }
+
+  useEffect(() => {
+    const fetchDeck = async () => {
+      const res = await api.readDeck(deckId)
+      // console.log(res)
+      setDeck(res)
+    }
+    fetchDeck()
+  }, [deckId])
 
   const title = "Edit Deck";
-
-  const clickHandler = (e) => {
-    e.preventDefault();
-    console.log("Clicked", e.target)
-    // createDeck()
-  };
 
   ////////// Components //////////
 
   const Crumbs = () => {
+    // const filteredDeck = filterDecks();
     return (
       <nav id="breadcrumbs">
         <ol className="breadcrumb">
@@ -33,7 +32,7 @@ export default function EditDeck({ decks }) {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deckId}`}>{`${filteredDeck.name}`}</a>
+            <a href={`/decks/${deckId}`}>{`${deck.name}`}</a>
           </li>
           <li className="breadcrumb-item">{title}</li>
         </ol>
@@ -50,15 +49,41 @@ export default function EditDeck({ decks }) {
   };
 
   const Form = () => {
+    const [updatedDeck, setUpdatedDeck] = useState(deck);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // console.log("Clicked", newDeck);
+      api.updateDeck(updatedDeck).then((res) => {
+        console.log(res.id)
+        history.push(`/decks/${res.id}`)
+      })
+    };
+
+    const handleChange = (e) => {
+      e.preventDefault()
+      const val = e.target.value
+      const key = e.target.name
+      setUpdatedDeck({
+        ...updatedDeck,
+        [key]: val,
+      })
+    }
+
+    // console.log(newDeck)
     return (
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             className="form-control"
             type="text"
             id="name"
+            name="name"
             placeholder="Deck Name"
+            value={updatedDeck.name}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -66,8 +91,12 @@ export default function EditDeck({ decks }) {
           <textarea
             className="min-w-50 form-control"
             type="text"
-            id="name"
-            placeholder="Brief description of the deck"
+            id="description"
+            name="description"
+            placeholder="Brief description of the deck" 
+            value={updatedDeck.description}
+            onChange={handleChange}
+            required
           />
         </div>
         <button
@@ -82,7 +111,6 @@ export default function EditDeck({ decks }) {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={clickHandler}
         >
           Submit
         </button>
@@ -90,12 +118,10 @@ export default function EditDeck({ decks }) {
     );
   };
 
-  {
-    /* <input type="text" value={this.state.value} onChange={this.handleChange} /> */
-  }
-
   // MAIN RENDER
-  return (
+  return !deck ? (
+    "Loading..."
+  ) : (
     <div className="container">
       <Crumbs />
       <Header />

@@ -1,27 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
-import * as Button from "../Layout/resources/Buttons";
+// import * as Button from "../Layout/resources/Buttons";
 
 // Route = "/decks/:deckId/cards/new"
 
 export default function AddCard({ decks }) {
   const history = useHistory();
   const { deckId } = useParams();
-  const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
+  const [deck, setDeck] = useState();
 
-  // async function fetchDecks() {
-  //   const deckList = await api.listDecks()
-  //   setDeckState(deckList)
-  // }
+  useEffect(() => {
+    const fetchDeck = async () => {
+      const res = await api.readDeck(deckId);
+      // console.log(res)
+      setDeck(res);
+    };
+    fetchDeck();
+  }, [deckId]);
 
   const title = "Add Card";
-
-  const clickHandler = (e) => {
-    e.preventDefault();
-    console.log("Clicked", e.target)
-    // createDeck()
-  };
 
   ////////// Components //////////
 
@@ -33,7 +31,7 @@ export default function AddCard({ decks }) {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deckId}`}>{`${filteredDeck.name}`}</a>
+            <a href={`/decks/${deckId}`}>{`${deck.name}`}</a>
           </li>
           <li className="breadcrumb-item">{title}</li>
         </ol>
@@ -50,24 +48,60 @@ export default function AddCard({ decks }) {
   };
 
   const Form = () => {
+    const [newCard, setNewCard] = useState({
+      front: "",
+      back: "",
+    });
+        
+    const handleChange = (e) => {
+      e.preventDefault()
+      const val = e.target.value
+      const key = e.target.name
+      setNewCard({
+        ...newCard,
+        [key]: val,
+      })
+    }
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // console.log("Clicked", newDeck);
+
+      api.createCard(deckId, newCard).then((res) => {
+        console.log(res.id)
+        history.push(`/decks/${deckId}`)
+        // history.push(`/decks/${deckId}/${res.id}`)
+      })
+    };
+
+    console.log(newCard.front, newCard.back)
+
     return (
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Front</label>
+          <label htmlFor="front">Front</label>
           <textarea
             className="form-control"
             type="text"
-            id="name"
+            id="front"
+            name="front"
             placeholder="Front side of card"
+            value={newCard.front}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="name">Back</label>
+          <label htmlFor="back">Back</label>
           <textarea
             className="min-w-50 form-control"
             type="text"
-            id="name"
+            id="back"
+            name="back"
             placeholder="Back side of card"
+            value={newCard.back}
+            onChange={handleChange}
+            required
           />
         </div>
         <button
@@ -82,7 +116,6 @@ export default function AddCard({ decks }) {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={clickHandler}
         >
           Save
         </button>
@@ -91,7 +124,9 @@ export default function AddCard({ decks }) {
   };
 
   // MAIN RENDER
-  return (
+  return !deck ? (
+    "Loading..."
+  ) : (
     <div className="container">
       <Crumbs />
       <Header />

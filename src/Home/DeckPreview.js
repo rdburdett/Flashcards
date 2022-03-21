@@ -2,12 +2,14 @@ import React from "react";
 import {
   Link,
 } from "react-router-dom";
+import * as Button from "../Layout/resources/Buttons"
 
 // TODO: change static to fetch from API localhost:8080
 // import { cards } from "../data/db.json";
 
 
-function DeckPreview({ deck }) {
+function DeckPreview({ deck, deleteHandler }) {
+
   return (
     <div className="container">
       <div className="d-flex flex-row justify-content-between">
@@ -30,10 +32,7 @@ function DeckPreview({ deck }) {
         </button>
       </Link>
 
-      <button className=" p-2 button border border-danger btn-danger rounded float-right">
-        <i className="bi bi-trash-fill"></i>
-      </button>
-      {/* <Button.Trash onClick={deleteHandler} /> */}
+      <Button.Trash onClick={deleteHandler} />
       
 
     </div>

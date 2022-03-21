@@ -1,27 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
-import * as Button from "../Layout/resources/Buttons";
 
-// Route = "/decks/:deckId"
+// Route = "/decks/:deckId/cards/:cardId/edit"
 
-export default function AddCard({ decks }) {
+export default function AddCard() {
   const history = useHistory();
-  const { deckId } = useParams();
-  const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
+  const { deckId, cardId } = useParams();
+  const [ deck, setDeck ] = useState();
+  const [ card, setCard ] = useState()
+  // console.log(deck)
 
-  // async function fetchDecks() {
-  //   const deckList = await api.listDecks()
-  //   setDeckState(deckList)
+
+
+  useEffect(() => {
+    
+    const fetchDeck = async () => {
+      // const filteredCards = (res.cards.filter((card) => card.id === parseInt(cardId))[0])
+
+      const res = await api.readDeck(deckId)
+      const filteredCard = (res.cards.filter((card) => card.id === parseInt(cardId))[0])
+      console.log("res: ", res, "Card: ", filteredCard)
+      setDeck(res)
+      setCard(filteredCard)
+    };
+    fetchDeck()
+
+  }, [deckId, cardId, setDeck, setCard ])
+
+
+
+  // const filteredCards = filterCards()
+  // setCard(filteredCards)
+
+  // const filterDecks = () => (decks.filter((deck) => deck.id === parseInt(deckId))[0]);
+
+  // const filterCards = () => {
+  //   const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
   // }
-
-  const title = "Edit Card";
-
-  const clickHandler = (e) => {
-    e.preventDefault();
-    console.log("Clicked", e.target)
-    // createDeck()
-  };
+  const title = `Edit Card ${cardId}`;
 
   ////////// Components //////////
 
@@ -33,7 +50,7 @@ export default function AddCard({ decks }) {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deckId}`}>{`${filteredDeck.name}`}</a>
+            <a href={`/decks/${deckId}`}>{`${deck.name}`}</a>
           </li>
           <li className="breadcrumb-item">{title}</li>
         </ol>
@@ -50,24 +67,60 @@ export default function AddCard({ decks }) {
   };
 
   const Form = () => {
+    
+    // const filterCards = () => (deck.cards.filter((card) => card.id === parseInt(cardId))[0]);
+    // const filteredCards = filterCards()
+    // setCard(filteredCards)
+
+    const [updatedCard, setUpdatedCard] = useState(card);
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // console.log("Clicked", newDeck);
+
+      api.updateCard(updatedCard).then((res) => {
+        console.log(res.id)
+        history.push(`/decks/${deckId}`)
+        // history.push(`/decks/${deckId}/${res.id}`)
+      })
+    };
+
+    const handleChange = (e) => {
+      e.preventDefault()
+      const val = e.target.value
+      const key = e.target.name
+      setUpdatedCard({
+        ...updatedCard,
+        [key]: val,
+      })
+    }
+    console.log(updatedCard.front, updatedCard.back)
+
     return (
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Front</label>
+          <label htmlFor="front">Front</label>
           <textarea
             className="form-control"
             type="text"
-            id="name"
+            id="front"
+            name="front"
             placeholder="Front side of card"
+            value={updatedCard.front}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="name">Back</label>
+          <label htmlFor="back">Back</label>
           <textarea
             className="min-w-50 form-control"
             type="text"
-            id="name"
+            id="back"
+            name="back"
             placeholder="Back side of card"
+            value={updatedCard.back}
+            onChange={handleChange}
+            required
           />
         </div>
         <button
@@ -82,7 +135,6 @@ export default function AddCard({ decks }) {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={clickHandler}
         >
           Save
         </button>
@@ -90,12 +142,10 @@ export default function AddCard({ decks }) {
     );
   };
 
-  {
-    /* <input type="text" value={this.state.value} onChange={this.handleChange} /> */
-  }
-
   // MAIN RENDER
-  return (
+  return !card ? (
+    "Loading..."
+  ) : (
     <div className="container">
       <Crumbs />
       <Header />

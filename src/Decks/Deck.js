@@ -9,51 +9,52 @@ import * as api from "../utils/api";
 
 // "/decks/:deckId"
 
+// TODO: change api to readDecks()
+
 export default function Deck() {
   const { deckId } = useParams();
   const history = useHistory();
-  const [decks, setDecks] = useState();
-
-  async function fetchDecks() {
-    const deckList = await api.listDecks();
-    setDecks(deckList);
-  }
+  const [deck, setDeck] = useState();
 
   useEffect(() => {
-    fetchDecks();
-  }, []);
+    const fetchDeck = async () => {
+    const res = await api.readDeck(deckId)
+    setDeck(res)
+    }
+    fetchDeck()
+  }, [deckId])
   
-  const filterDecks = () =>
-    decks.filter((deck) => deck.id === parseInt(deckId))[0];
+  // const filterDecks = () =>
+  //   decks.filter((deck) => deck.id === parseInt(deckId))[0];
 
   const deleteDeck = () => {
     api.deleteDeck(deckId);
-    console.log("deleted", deckId);
+    console.log("Deleted deck:", deckId, deck.name);
     history.push("/");
   };
 
   const Crumbs = () => {
-    const filteredDeck = filterDecks();
+    // const filteredDeck = filterDecks();
     return (
       <nav id="breadcrumbs">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
             <a href="/">Home</a>
           </li>
-          <li className="breadcrumb-item">{filteredDeck.name}</li>
+          <li className="breadcrumb-item">{deck.name}</li>
         </ol>
       </nav>
     );
   };
 
   const DeckTitle = () => {
-    const filteredDeck = filterDecks();
+    // const filteredDeck = filterDecks();
 
     return (
       <div>
         <div className="pb-2">
-          <h5>{filteredDeck.name}</h5>
-          <p>{filteredDeck.description}</p>
+          <h5>{deck.name}</h5>
+          <p>{deck.description}</p>
         </div>
 
         <Link to={`/decks/${deckId}/edit`}>
@@ -75,9 +76,14 @@ export default function Deck() {
 
   const CardTemplate = ({ card, cardId }) => {
     const deleteCard = () => {
+      const cardFront = card.front
       api.deleteCard(cardId);
-      console.log("deleted", cardId);
-      fetchDecks()
+      console.log("Deleted card:", cardId, cardFront);
+      const fetchDeck = async () => {
+        const res = await api.readDeck(deckId)
+        setDeck(res)
+        }
+        fetchDeck()
     };
 
     return (
@@ -97,8 +103,8 @@ export default function Deck() {
   };
 
   const Cards = () => {
-    const filteredDeck = filterDecks();
-    const cards = filteredDeck.cards;
+    // const filteredDeck = filterDecks();
+    const cards = deck.cards;
     const listOfCards = cards.map((card) => {
       return (
         <li className="list-group-item" key={card.id}>
@@ -116,7 +122,7 @@ export default function Deck() {
   };
 
   // MAIN RENDER
-  return !decks ? (
+  return !deck ? (
     "Loading"
   ) : (
     <div className="container">

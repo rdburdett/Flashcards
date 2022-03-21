@@ -11,6 +11,11 @@ import EditDeck from "../EditDeck/EditDeck"
 import AddCard from "../AddCard/AddCard"
 import EditCard from "../EditCard/EditCard"
 
+// TODO: 
+// - Delete card prompt
+// - Add Card
+// - Edit Card
+// - 
 
 export default function Layout() {
   return (
@@ -35,11 +40,11 @@ export default function Layout() {
           <Route exact path={`/decks/:deckId/edit`}>
             <EditDeck />
           </Route>
-          {/* Deck */}
+          {/* Deck DONE */}
           <Route exact path="/decks/:deckId">
             <Deck />
           </Route>
-          {/* Study */}
+          {/* Study DONE */}
           <Route exact path={`/decks/:deckId/study`}>
             <Study/>
           </Route>
@@ -51,12 +56,9 @@ export default function Layout() {
           <Route path={`/decks/:deckId/cards/new`}>
             <AddCard/>
           </Route>
- 
-
-
           {/* Not Found */}
           <Route><NotFound /></Route>
-          
+
         </Switch>
       </div>
     </div>
