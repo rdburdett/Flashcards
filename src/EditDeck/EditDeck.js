@@ -9,11 +9,9 @@ export default function EditDeck() {
   const { deckId } = useParams();
   const [deck, setDeck] = useState();
 
-
   useEffect(() => {
     const fetchDeck = async () => {
       const res = await api.readDeck(deckId)
-      // console.log(res)
       setDeck(res)
     }
     fetchDeck()
@@ -53,7 +51,7 @@ export default function EditDeck() {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      // console.log("Clicked", newDeck);
+
       api.updateDeck(updatedDeck).then((res) => {
         console.log(res.id)
         history.push(`/decks/${res.id}`)
@@ -70,7 +68,6 @@ export default function EditDeck() {
       })
     }
 
-    // console.log(newDeck)
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">

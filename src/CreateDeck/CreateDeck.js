@@ -8,11 +8,6 @@ export default function CreateDeck() {
   const history = useHistory();
   const title = "Create Deck";
 
-  // async function fetchDecks() {
-  //   const deckList = await api.listDecks()
-  //   setDecks(deckList)
-  // }
-
   ////////// Components //////////
 
   const Crumbs = () => {
@@ -39,29 +34,27 @@ export default function CreateDeck() {
   const Form = () => {
     const [newDeck, setNewDeck] = useState({
       name: "",
-      description: ""
+      description: "",
     });
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      // console.log("Clicked", newDeck);
+
       api.createDeck(newDeck).then((res) => {
-        console.log(res.id)
-        history.push(`/decks/${res.id}`)
-      })
+        history.push(`/decks/${res.id}`);
+      });
     };
 
     const handleChange = (e) => {
-      e.preventDefault()
-      const val = e.target.value
-      const key = e.target.name
+      e.preventDefault();
+      const val = e.target.value;
+      const key = e.target.name;
       setNewDeck({
         ...newDeck,
         [key]: val,
-      })
-    }
+      });
+    };
 
-    console.log(newDeck)
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -84,7 +77,7 @@ export default function CreateDeck() {
             type="text"
             id="description"
             name="description"
-            placeholder="Brief description of the deck" 
+            placeholder="Brief description of the deck"
             value={newDeck.description}
             onChange={handleChange}
             required
@@ -99,10 +92,7 @@ export default function CreateDeck() {
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

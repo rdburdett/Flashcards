@@ -23,7 +23,7 @@ export default function Layout() {
       <Header />
       
       {/* Routes */}
-      <div className="px-4">
+      <div className="px-4 mb-4">
       
         <Switch>
           {/* COMPLETED */}

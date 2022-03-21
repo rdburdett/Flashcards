@@ -7,9 +7,7 @@ import {
 import * as Button from "../Layout/resources/Buttons";
 import * as api from "../utils/api";
 
-// "/decks/:deckId"
-
-// TODO: change api to readDecks()
+// Route = "/decks/:deckId"
 
 export default function Deck() {
   const { deckId } = useParams();
@@ -18,20 +16,25 @@ export default function Deck() {
 
   useEffect(() => {
     const fetchDeck = async () => {
-    const res = await api.readDeck(deckId)
-    setDeck(res)
-    }
-    fetchDeck()
-  }, [deckId])
-  
-  // const filterDecks = () =>
-  //   decks.filter((deck) => deck.id === parseInt(deckId))[0];
+      const res = await api.readDeck(deckId);
+      setDeck(res);
+    };
+    fetchDeck();
+  }, [deckId]);
 
   const deleteDeck = () => {
-    api.deleteDeck(deckId);
-    console.log("Deleted deck:", deckId, deck.name);
-    history.push("/");
+    if (
+      window.confirm(
+        "Delete this deck? \n\n You will not be able to recover it."
+      )
+    ) {
+      api.deleteDeck(deckId);
+      console.log("Deleted deck:", deckId, deck.name);
+      history.push("/");
+    } else console.log("Cancelled");
   };
+
+  ////////// Components //////////
 
   const Crumbs = () => {
     // const filteredDeck = filterDecks();
@@ -48,8 +51,6 @@ export default function Deck() {
   };
 
   const DeckTitle = () => {
-    // const filteredDeck = filterDecks();
-
     return (
       <div>
         <div className="pb-2">
@@ -76,14 +77,18 @@ export default function Deck() {
 
   const CardTemplate = ({ card, cardId }) => {
     const deleteCard = () => {
-      const cardFront = card.front
-      api.deleteCard(cardId);
-      console.log("Deleted card:", cardId, cardFront);
-      const fetchDeck = async () => {
-        const res = await api.readDeck(deckId)
-        setDeck(res)
-        }
-        fetchDeck()
+      if (
+        window.confirm(
+          "Delete this card? \n\n You will not be able to recover it."
+        )
+      ) {
+        api.deleteCard(cardId);
+        const fetchDeck = async () => {
+          const res = await api.readDeck(deckId);
+          setDeck(res);
+        };
+        fetchDeck();
+      } else console.log("Cancelled");
     };
 
     return (
@@ -103,7 +108,6 @@ export default function Deck() {
   };
 
   const Cards = () => {
-    // const filteredDeck = filterDecks();
     const cards = deck.cards;
     const listOfCards = cards.map((card) => {
       return (
@@ -132,35 +136,3 @@ export default function Deck() {
     </div>
   );
 }
-
-//////////////////////////
-
-// Create Card
-
-// function CardCreate() {
-//   const history = useHistory();
-//   const { deckId } = useParams();
-//   const [deck, setDeck] = useState({ cards: [] });
-
-//   useEffect(() => {
-//     readDeck(deckId).then(setDeck);
-//   }, [deckId]);
-
-//   function submitHandler(card) {
-//     createCard(deckId, card);
-//   }
-
-//   function doneHandler() {
-//     history.push(`/decks/${deckId}`);
-//   }
-
-// //////////////
-
-//   function DeckCreate() {
-//     const history = useHistory();
-
-//     function submitHandler(deck) {
-//       createDeck(deck).then((savedDeck) =>
-//         history.push(`/decks/${savedDeck.id}`)
-//       );
-//     }
