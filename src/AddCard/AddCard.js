@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import * as api from "../utils/api";
 import Form from "./Form"
+import fetchDeck from "../utils/fetchDeck";
 
 // Route = "/decks/:deckId/cards/new"
 
 export default function AddCard({ decks }) {
-  // const history = useHistory();
   const { deckId } = useParams();
   const [deck, setDeck] = useState();
 
   useEffect(() => {
-    const fetchDeck = async () => {
-      const res = await api.readDeck(deckId);
-      setDeck(res);
-    };
-    fetchDeck();
+    fetchDeck(setDeck, deckId);
   }, [deckId]);
 
   const title = "Add Card";

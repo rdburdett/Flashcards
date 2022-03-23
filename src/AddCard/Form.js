@@ -25,7 +25,6 @@ export default function Form() {
     e.preventDefault();
 
     api.createCard(deckId, newCard).then((res) => {
-      console.log(res.id);
       history.push(`/decks/${deckId}`);
     });
   };

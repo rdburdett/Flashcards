@@ -6,6 +6,7 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import * as Button from "../Layout/resources/Buttons";
 import * as api from "../utils/api";
+import fetchDeck from "../utils/fetchDeck";
 
 // Route = "/decks/:deckId"
 
@@ -15,11 +16,7 @@ export default function Deck() {
   const [deck, setDeck] = useState();
 
   useEffect(() => {
-    const fetchDeck = async () => {
-      const res = await api.readDeck(deckId);
-      setDeck(res);
-    };
-    fetchDeck();
+    fetchDeck(setDeck, deckId);
   }, [deckId]);
 
   const deleteDeck = () => {
@@ -37,7 +34,6 @@ export default function Deck() {
   ////////// Components //////////
 
   const Crumbs = () => {
-    // const filteredDeck = filterDecks();
     return (
       <nav id="breadcrumbs">
         <ol className="breadcrumb">
@@ -83,11 +79,7 @@ export default function Deck() {
         )
       ) {
         api.deleteCard(cardId);
-        const fetchDeck = async () => {
-          const res = await api.readDeck(deckId);
-          setDeck(res);
-        };
-        fetchDeck();
+        fetchDeck(setDeck, deckId);
       } else console.log("Cancelled");
     };
 
