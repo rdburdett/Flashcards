@@ -5,7 +5,7 @@ import Form from "../AddCard/Form"
 
 // Route = "/decks/:deckId/cards/:cardId/edit"
 
-export default function AddCard() {
+export default function EditCard() {
   const { deckId, cardId } = useParams();
   const [deck, setDeck] = useState();
   const [card, setCard] = useState();
@@ -57,7 +57,7 @@ export default function AddCard() {
     <div className="container">
       <Crumbs />
       <Header />
-      <Form />
+      <Form submitType="edit" initCard={card}/>
     </div>
   );
 }

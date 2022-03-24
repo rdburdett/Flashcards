@@ -48,7 +48,7 @@ export default function AddCard({ decks }) {
     <div className="container">
       <Crumbs />
       <Header />
-      <Form />
+      <Form submitType="add"/>
     </div>
   );
 }

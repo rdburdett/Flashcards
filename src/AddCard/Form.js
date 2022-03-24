@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
 
-export default function Form() {
+// Takes an argument of add, or edit ie. Form submitType={}
+export default function Form({ submitType, initCard={
+  front: "",
+  back: "",
+}}) {
   const history = useHistory();
   const { deckId } = useParams();
 
-  const [newCard, setNewCard] = useState({
-    front: "",
-    back: "",
-  });
+  const [newCard, setNewCard] = useState(initCard);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -23,10 +24,15 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    api.createCard(deckId, newCard).then((res) => {
-      history.push(`/decks/${deckId}`);
-    });
+    if (submitType==="add") {
+      api.createCard(deckId, newCard).then((res) => {
+        history.push(`/decks/${deckId}`);
+      })
+    } else {
+      api.updateCard(newCard).then((res) => {
+        history.push(`/decks/${deckId}`);
+      })
+    }
   };
 
   return (

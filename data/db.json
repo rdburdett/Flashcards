@@ -47,6 +47,24 @@
       "back": "testing",
       "deckId": 1,
       "id": 6
+    },
+    {
+      "front": "new card",
+      "back": "test",
+      "deckId": 1,
+      "id": 7
+    },
+    {
+      "front": "editing this card",
+      "back": "new stuff",
+      "deckId": 1,
+      "id": 8
+    },
+    {
+      "front": "edit 2",
+      "back": "edit 2",
+      "deckId": 1,
+      "id": 9
     }
   ]
 }
