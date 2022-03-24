@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
-import fetchDeck from "../utils/fetchDeck"
 
 // Route = "/decks/:deckId/edit"
 
@@ -11,6 +10,10 @@ export default function EditDeck() {
   const [deck, setDeck] = useState();
 
   useEffect(() => {
+    const fetchDeck = async (setDeck, deckId) => {
+      const res = await api.readDeck(deckId);
+      setDeck(res);
+    };
     fetchDeck(setDeck, deckId)
   }, [deckId])
 

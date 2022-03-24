@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Flipper from "./Flipper";
-import fetchDeck from "../utils/fetchDeck";
-
+import * as api from "../utils/api/index"
 // Route = "/decks/:deckId"
 
 export default function Study() {
@@ -10,6 +9,10 @@ export default function Study() {
   const [deck, setDeck] = useState();
 
   useEffect(() => {
+    const fetchDeck = async (setDeck, deckId) => {
+      const res = await api.readDeck(deckId);
+      setDeck(res);
+    };
     fetchDeck(setDeck, deckId);
   }, [deckId]);
 

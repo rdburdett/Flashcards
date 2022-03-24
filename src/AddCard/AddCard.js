@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form"
-import fetchDeck from "../utils/fetchDeck";
+import * as api from "../utils/api/index"
 
 // Route = "/decks/:deckId/cards/new"
 
@@ -10,6 +10,10 @@ export default function AddCard({ decks }) {
   const [deck, setDeck] = useState();
 
   useEffect(() => {
+    const fetchDeck = async (setDeck, deckId) => {
+      const res = await api.readDeck(deckId);
+      setDeck(res);
+    };
     fetchDeck(setDeck, deckId);
   }, [deckId]);
 

@@ -6,7 +6,6 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import * as Button from "../Layout/resources/Buttons";
 import * as api from "../utils/api";
-import fetchDeck from "../utils/fetchDeck";
 
 // Route = "/decks/:deckId"
 
@@ -16,6 +15,10 @@ export default function Deck() {
   const [deck, setDeck] = useState();
 
   useEffect(() => {
+    const fetchDeck = async (setDeck, deckId) => {
+      const res = await api.readDeck(deckId);
+      setDeck(res);
+    };
     fetchDeck(setDeck, deckId);
   }, [deckId]);
 
@@ -79,6 +82,10 @@ export default function Deck() {
         )
       ) {
         api.deleteCard(cardId);
+        const fetchDeck = async (setDeck, deckId) => {
+          const res = await api.readDeck(deckId);
+          setDeck(res);
+        };
         fetchDeck(setDeck, deckId);
       } else console.log("Cancelled");
     };
