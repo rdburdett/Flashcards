@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useHistory, useParams } from "react-router-dom";
 import * as api from "../utils/api";
-import Form from "../AddCard/Form"
+import * as Button from "../Layout/resources/Buttons";
 
-// Route = "/decks/:deckId/cards/:cardId/edit"
+// Route = "/decks/:deckId"
 
-export default function EditCard() {
-  const { deckId, cardId } = useParams();
-  const [deck, setDeck] = useState();
-  const [card, setCard] = useState();
+export default function AddCard({ decks }) {
+  const history = useHistory();
+  const { deckId } = useParams();
+  const filteredDeck = decks.filter((deck) => deck.id === parseInt(deckId))[0];
 
-  useEffect(() => {
-    const fetchDeck = async () => {
-      const res = await api.readDeck(deckId);
-      const filteredCard = res.cards.filter(
-        (card) => card.id === parseInt(cardId)
-      )[0];
-      setDeck(res);
-      setCard(filteredCard);
-    };
-    fetchDeck();
-  }, [deckId, cardId, setDeck, setCard]);
+  // async function fetchDecks() {
+  //   const deckList = await api.listDecks()
+  //   setDeckState(deckList)
+  // }
 
-  const title = `Edit Card ${cardId}`;
+  const title = "Edit Card";
+
+  const clickHandler = (e) => {
+    e.preventDefault();
+    console.log("Clicked", e.target)
+    // createDeck()
+  };
 
   ////////// Components //////////
 
@@ -34,7 +33,7 @@ export default function EditCard() {
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item">
-            <a href={`/decks/${deckId}`}>{`${deck.name}`}</a>
+            <a href={`/decks/${deckId}`}>{`${filteredDeck.name}`}</a>
           </li>
           <li className="breadcrumb-item">{title}</li>
         </ol>
@@ -50,14 +49,57 @@ export default function EditCard() {
     );
   };
 
+  const Form = () => {
+    return (
+      <form>
+        <div className="form-group">
+          <label htmlFor="name">Front</label>
+          <textarea
+            className="form-control"
+            type="text"
+            id="name"
+            placeholder="Front side of card"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="name">Back</label>
+          <textarea
+            className="min-w-50 form-control"
+            type="text"
+            id="name"
+            placeholder="Back side of card"
+          />
+        </div>
+        <button
+          type="cancel"
+          className="mr-2 btn btn-secondary"
+          onClick={() => {
+            history.push("/");
+          }}
+        >
+          Done
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={clickHandler}
+        >
+          Save
+        </button>
+      </form>
+    );
+  };
+
+  {
+    /* <input type="text" value={this.state.value} onChange={this.handleChange} /> */
+  }
+
   // MAIN RENDER
-  return !card ? (
-    "Loading..."
-  ) : (
+  return (
     <div className="container">
       <Crumbs />
       <Header />
-      <Form submitType="edit" initCard={card}/>
+      <Form />
     </div>
   );
 }

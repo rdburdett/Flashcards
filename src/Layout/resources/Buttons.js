@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 const commonStyling = "mr-2 p-2 button text-white border rounded";
 
 export function CreateDeckButton() {
+  const createDeckButtonHandler = () => {
+    console.log("clicked");
+  };
 
   return (
     <div>
       <Link to={`/decks/new`}>
         <button
           className={`${commonStyling} mb-2 border-secondary btn-secondary`}
+          onClick={() => createDeckButtonHandler()}
         >
           <i className="bi bi-plus-lg"></i> Create Deck
         </button>

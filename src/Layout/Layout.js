@@ -1,24 +1,28 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Header from "./Header";
 import NotFound from "./NotFound";
 import Deck from "../Decks/Deck";
 import DecksList from "../Home/DecksList";
 import Study from "../Study/Study";
-import CreateDeck from "../CreateDeck/CreateDeck";
-import EditDeck from "../EditDeck/EditDeck";
-import AddCard from "../AddCard/AddCard";
-import EditCard from "../EditCard/EditCard";
+import CreateDeck from "../CreateDeck/CreateDeck"
+import EditDeck from "../EditDeck/EditDeck"
+import AddCard from "../AddCard/AddCard"
+import EditCard from "../EditCard/EditCard"
+
 
 export default function Layout() {
   return (
     <div className="background-warning">
       <Header />
-
+      
       {/* Routes */}
-      <div className="px-4 mb-4">
+      <div className="px-4">
+      
         <Switch>
+          {/* COMPLETED */}
+
           {/* Home (list of decks) */}
           <Route exact path="/">
             <DecksList />
@@ -31,26 +35,28 @@ export default function Layout() {
           <Route exact path={`/decks/:deckId/edit`}>
             <EditDeck />
           </Route>
-          {/* Deck DONE */}
+          {/* Deck */}
           <Route exact path="/decks/:deckId">
             <Deck />
           </Route>
-          {/* Study DONE */}
+          {/* Study */}
           <Route exact path={`/decks/:deckId/study`}>
-            <Study />
+            <Study/>
           </Route>
           {/* Edit Card */}
           <Route path={`/decks/:deckId/cards/:cardId/edit`}>
-            <EditCard />
+            <EditCard/>
           </Route>
           {/* Add Card */}
           <Route path={`/decks/:deckId/cards/new`}>
-            <AddCard />
+            <AddCard/>
           </Route>
+ 
+
+
           {/* Not Found */}
-          <Route>
-            <NotFound />
-          </Route>
+          <Route><NotFound /></Route>
+          
         </Switch>
       </div>
     </div>
